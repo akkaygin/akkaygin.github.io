@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Silly Cat Autoslop Generator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+      background-color: #f4f4f4;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    button, input[type="file"] {
+      font-size: 16px;
+      cursor: pointer;
+      outline: none;
+    }
+
+    p {
+      margin: 0;
+      padding: 0;
+    }
+
+    #output {
+      margin-top: 20px;
+      width: 100%;
+      height: auto;
+      border: 2px dashed #ccc;
+      padding: 10px;
+      background-color: #fafafa;
+    }
+
+    #message {
+      color: red;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    img {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Silly Cat Autoslop Generator</h1>
+    <div>
+      <button onclick="fetchRandomCat()">Get a Random Silly Cat</button>
+      <label for="localCat">or</label>
+      <input type="file" id="localCat" name="localCat" accept="image/*" style="float:right">
+    </div>
+    <div style="margin: 1rem; display: flex;">
+      <button onclick="showAutoslop()" style="flex-grow: 2; margin: 0 10px;">Generate Autoslop</button>
+      <button onclick="reset()" style="margin: 0 10px;">Reset</button>
+    </div>
+
+    <div id="message"></div>
+    <div id="output">
+      <img id="previewImg" style="display: none;"/>
+      <img id="outImg" style="display: none;"/>
+    </div>
+  </div>
+
+  <script src="generator.js"></script>
+  <script>
+    const message = document.getElementById('message');
+    const previewImg = document.getElementById('previewImg');
+    previewImg.crossOrigin = "anonymous";
+    const outImg = document.getElementById('outImg');
+
+    function fetchRandomCat() {
+      previewImg.src = 'https://cataas.com/cat';
+      previewImg.style.display = 'block';
+      outImg.style.display = 'none';
+      message.innerText = '';
+    }
+
+    const localCat = document.getElementById('localCat');
+    localCat.addEventListener('change', () => {
+      previewImg.src = URL.createObjectURL(localCat.files[0]);
+      previewImg.style.display = 'block';
+      outImg.style.display = 'none';
+      message.innerText = '';
+    });
+
+    function reset() {
+      currentCat = null;
+      previewImg.style.display = 'none';
+      outImg.style.display = 'none';
+      message.innerText = '';
+    }
+
+    function showAutoslop() {
+      if (previewImg.src == null) {
+        message.innerText = 'Please get a random cat or upload one.';
+        return;
+      }
+
+      outImg.src = generateAutoslop(previewImg);
+      outImg.style.display = 'block';
+      previewImg.style.display = 'none';
+      message.innerText = '';
+    }
+  </script>
+</body>
+</html>
